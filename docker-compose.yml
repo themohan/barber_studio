@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  barber_studio:
+    build: .
+    container_name: private_millionaires_studio
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=pm_barber_studio_ultra_secure_jwt_secret_2026_x89a
+      - DATABASE_URL=sqlite+aiosqlite:///./data/barber_studio.db
+      - UPLOAD_DIR=/app/static/images/uploads
+    volumes:
+      - studio_data:/app/data
+      - studio_uploads:/app/static/images/uploads
+
+volumes:
+  studio_data:
+  studio_uploads:

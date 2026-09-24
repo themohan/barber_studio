@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Millionaires Barber Studio | Luxury Grooming & Barbershop | Colton, CA</title>
+  <meta name="description" content="Colton's premier private luxury barbershop. Executive fades, straight razor beard sculpting, ozone hot towel facials, and handcrafted men's grooming products. 1740 E Washington St, Colton CA.">
+  <meta name="keywords" content="Barbershop Colton CA, Private Millionaires Barber Studio, Luxury haircut, Beard trim, Men's facial, Barber Colton, Fade Haircut">
+  
+  <!-- Google Fonts: Cinzel & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Top Studio Bar -->
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span>📍 1740 E Washington St, Colton, CA 92324</span>
+      <span style="opacity:0.4;">|</span>
+      <span>📞 (909) 430-4591</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span id="liveStatusPill" class="pill pill-green">
+        <span class="pulse-indicator"></span> Live Sync Active
+      </span>
+      <a href="https://maps.app.goo.gl/F4WUJes6jkD8sakB6" target="_blank" rel="noopener">Get Directions ↗</a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-monogram">PM</div>
+        <div class="brand-text">
+          <h1>Private Millionaires</h1>
+          <span>Barber Studio • Colton, CA</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#servicesSection" class="nav-link">Services</a></li>
+          <li><a href="#bookingSection" class="nav-link">Book Appointment</a></li>
+          <li><a href="#shopSection" class="nav-link">Grooming Store</a></li>
+          <li><a href="#studioInfoSection" class="nav-link">Hours & Location</a></li>
+          <li>
+            <a href="#" id="adminPortalLink" class="nav-link" style="display:none;color:#d4af37;" onclick="App.openAdminPortal();return false;">
+              ★ Admin Portal
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Shopping Cart Button -->
+        <div class="cart-btn-wrap">
+          <button class="btn btn-secondary btn-icon" onclick="App.openCartDrawer()" title="View Grooming Bag">
+            🛍️
+            <span id="cartBadge" class="badge-count" style="display:none;">0</span>
+          </button>
+        </div>
+
+        <!-- Auth Navigation Actions (Dynamic) -->
+        <div id="authNavActions" style="display:flex;align-items:center;gap:10px;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pill pill-gold">★ 5.0 Star Rated Private Grooming Lounge</span>
+      </div>
+      <h1 class="hero-title">Where Precision Meets <span class="gold-text">Royalty.</span></h1>
+      <p class="hero-subtitle">
+        Step into Colton's most prestigious private barbershop. Master craft scissor work, surgical razor lineups, hot towel ozone facials, and handcrafted apothecary formulas.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#bookingSection" class="btn btn-gold">
+          💈 Book Your VIP Slot
+        </a>
+        <a href="#shopSection" class="btn btn-outline-gold">
+          ✨ Explore Grooming Store
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <h3>100%</h3>
+          <p>Private VIP Chairs</p>
+        </div>
+        <div class="stat-item">
+          <h3>Real-Time</h3>
+          <p>Instant Slot Sync</p>
+        </div>
+        <div class="stat-item">
+          <h3>24K Quality</h3>
+          <p>Handcrafted Products</p>
+        </div>
+        <div class="stat-item">
+          <h3>Colton, CA</h3>
+          <p>Premier Studio</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="servicesSection" class="section">
+    <div class="section-header">
+      <span class="section-subtitle">Tailored Craftsmanship</span>
+      <h2 class="section-title">The <span class="gold-text">Executive</span> Service Menu</h2>
+      <p class="section-desc">Every cut is engineered to complement your bone structure, profile, and lifestyle. Select your signature experience to begin booking.</p>
+    </div>
+
+    <div class="category-filter services-filter">
+      <button class="filter-btn active" data-cat="all">All Services</button>
+      <button class="filter-btn" data-cat="VIP Combos">VIP Combos</button>
+      <button class="filter-btn" data-cat="Haircuts">Haircuts</button>
+      <button class="filter-btn" data-cat="Beard Care">Beard Care</button>
+      <button class="filter-btn" data-cat="Treatments">Treatments</button>
+    </div>
+
+    <div id="servicesGrid" class="cards-grid">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- Interactive Slot Booking Section -->
+  <section id="bookingSection" class="section">
+    <div class="section-header">
+      <span class="section-subtitle">Real-Time Scheduling</span>
+      <h2 class="section-title">Reserve Your <span class="gold-text">Private Slot</span></h2>
+      <p class="section-desc">Pick an available time released directly by Master Barbers. Slots sync instantly across all clients in real-time.</p>
+    </div>
+
+    <div class="booking-container">
+      <div class="booking-steps-bar">
+        <div class="booking-step active">
+          <div class="step-num">1</div>
+          <div class="step-label">Select Service</div>
+        </div>
+        <div style="flex-grow:1;height:2px;background:rgba(212,175,55,0.3);margin:0 12px 20px;"></div>
+        <div class="booking-step active">
+          <div class="step-num">2</div>
+          <div class="step-label">Choose Date & Time</div>
+        </div>
+        <div style="flex-grow:1;height:2px;background:rgba(212,175,55,0.3);margin:0 12px 20px;"></div>
+        <div class="booking-step">
+          <div class="step-num">3</div>
+          <div class="step-label">Confirm VIP Slot</div>
+        </div>
+      </div>
+
+      <!-- Date Selection Carousel -->
+      <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+        <span class="form-label" style="margin:0;">Select Appointment Date:</span>
+        <span style="font-size:0.8rem;color:#9aa0ac;">Monday: Studio Closed</span>
+      </div>
+      <div id="dateSelectorWrap" class="date-selector-wrap">
+        <!-- Generated by JS -->
+      </div>
+
+      <!-- Live Available Slots Grid -->
+      <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+        <span class="form-label" style="margin:0;">Available Real-Time Slots:</span>
+        <span style="font-size:0.78rem;color:#2ecc71;">● Live Updates Active</span>
+      </div>
+      <div id="slotsGrid" class="slots-grid">
+        <!-- Generated by JS -->
+      </div>
+
+      <!-- Floating Confirmation Action Bar -->
+      <div id="bookingConfirmationBar" style="display:none;background:linear-gradient(90deg,#191c28 0%,#11131c 100%);border:1px solid var(--gold-border);border-radius:14px;padding:20px 28px;justify-content:space-between;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.8);">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Products & E-Commerce Section -->
+  <section id="shopSection" class="section">
+    <div class="section-header">
+      <span class="section-subtitle">Private Apothecary Reserve</span>
+      <h2 class="section-title">Luxury <span class="gold-text">Hair & Skin</span> Formulas</h2>
+      <p class="section-desc">Formulated with organic clays, pure oud oils, and active minerals. Available for studio pickup or direct doorstep delivery.</p>
+    </div>
+
+    <div class="category-filter products-filter">
+      <button class="filter-btn active" data-cat="all">All Products</button>
+      <button class="filter-btn" data-cat="Hair Styling">Hair Styling</button>
+      <button class="filter-btn" data-cat="Beard Care">Beard Care</button>
+      <button class="filter-btn" data-cat="Skin & Face">Skin & Face</button>
+      <button class="filter-btn" data-cat="Cologne & Fragrance">Cologne</button>
+      <button class="filter-btn" data-cat="Tools">Barber Tools</button>
+    </div>
+
+    <div id="productsGrid" class="cards-grid">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- Studio Information, Hours & Policies Section -->
+  <section id="studioInfoSection" class="section">
+    <div class="section-header">
+      <span class="section-subtitle">Colton Studio Headquarters</span>
+      <h2 class="section-title">Hours, Location & <span class="gold-text">Studio Etiquette</span></h2>
+      <p class="section-desc">Experience unparalleled exclusivity. Please review our operating schedule and guidelines prior to your visit.</p>
+    </div>
+
+    <div class="studio-info-grid">
+      <!-- Operating Hours & Map -->
+      <div class="hours-card">
+        <h3 style="font-size:1.35rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+          <span>🕒</span> Operating Hours
+        </h3>
+        
+        <div class="hours-row">
+          <span>Tuesday – Wednesday</span>
+          <strong style="color:#f3e5ab;">11:00 AM – 6:00 PM</strong>
+        </div>
+        <div class="hours-row">
+          <span>Thursday – Friday</span>
+          <strong style="color:#f3e5ab;">9:00 AM – 7:00 PM</strong>
+        </div>
+        <div class="hours-row">
+          <span>Saturday – Sunday</span>
+          <strong style="color:#f3e5ab;">9:00 AM – 5:00 PM</strong>
+        </div>
+        <div class="hours-row">
+          <span>Monday</span>
+          <span style="color:#e74c3c;font-weight:600;">Closed (VIP Requests Only)</span>
+        </div>
+
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);">
+          <h4 style="color:#d4af37;margin-bottom:8px;font-size:1.05rem;">📍 Studio Address</h4>
+          <p style="color:#d1d5db;margin-bottom:14px;font-size:0.95rem;">
+            1740 East Washington Street, Colton, CA 92324<br>
+            Phone: (909) 430-4591
+          </p>
+          <a href="https://maps.app.goo.gl/F4WUJes6jkD8sakB6" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm">
+            Open in Google Maps ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Studio Policies -->
+      <div class="policies-card">
+        <h3 style="font-size:1.35rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+          <span>📜</span> Studio Guidelines
+        </h3>
+
+        <div class="policy-item">
+          <div class="policy-title">⏱ Punctuality & Grace Period</div>
+          <div class="policy-desc">
+            To respect each client's dedicated private session, a 15-minute grace period is provided. A $10 late fee applies after 15 minutes. Being 30+ minutes late requires rescheduling.
+          </div>
+        </div>
+
+        <div class="policy-item">
+          <div class="policy-title">🚿 Clean Hair Standard</div>
+          <div class="policy-desc">
+            Hair must be clean and freshly shampooed prior to your service to protect blade precision, or you may add our signature Royal Scalp Shampoo treatment.
+          </div>
+        </div>
+
+        <div class="policy-item">
+          <div class="policy-title">🌙 After-Hours VIP Sessions</div>
+          <div class="policy-desc">
+            A $50 after-hours fee applies for requested slots outside standard hours, ensuring private 1-on-1 studio lockdown.
+          </div>
+        </div>
+
+        <div class="policy-item">
+          <div class="policy-title">💳 Payment Acceptance</div>
+          <div class="policy-desc">
+            Balances and purchases can be completed with Cash, Zelle, Cash App, or Credit/Debit card at checkout.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <div class="brand-logo" style="margin-bottom:16px;">
+          <div class="logo-monogram">PM</div>
+          <div class="brand-text">
+            <h2 style="font-size:1.1rem;">Private Millionaires</h2>
+            <span>Barber Studio</span>
+          </div>
+        </div>
+        <p style="color:#9aa0ac;font-size:0.9rem;line-height:1.6;max-width:320px;">
+          Colton's premier private grooming studio. Delivering bespoke fades, sharp razor sculpting, and prestige hair and skincare essentials.
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:#d4af37;margin-bottom:16px;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.06em;">Quick Links</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.9rem;">
+          <li><a href="#servicesSection" style="color:#9aa0ac;text-decoration:none;">Signature Cuts</a></li>
+          <li><a href="#bookingSection" style="color:#9aa0ac;text-decoration:none;">Book Appointment</a></li>
+          <li><a href="#shopSection" style="color:#9aa0ac;text-decoration:none;">Grooming Store</a></li>
+          <li><a href="#studioInfoSection" style="color:#9aa0ac;text-decoration:none;">Operating Hours</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:#d4af37;margin-bottom:16px;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.06em;">Contact Studio</h4>
+        <p style="font-size:0.9rem;color:#9aa0ac;line-height:1.7;">
+          1740 E Washington St<br>
+          Colton, CA 92324<br>
+          Phone: (909) 430-4591<br>
+          vip@privatemillionairesbarber.com
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:#d4af37;margin-bottom:16px;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.06em;">Demo Access</h4>
+        <p style="font-size:0.82rem;color:#9aa0ac;margin-bottom:12px;">Instant 1-click test credentials:</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="App.quickDemoLogin('admin')">
+            👑 Login as Master Barber (Admin)
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="App.quickDemoLogin('customer')">
+            👤 Login as VIP Client
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 Private Millionaires Barber Studio. All Rights Reserved.</div>
+      <div>Designed for Luxury & VIP Precision • Powered by Python & WebSockets</div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS & DRAWERS ================= -->
+
+  <!-- Auth Modal (Sign In / Register) -->
+  <div id="authModal" class="modal-backdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="authModalTitle" class="gold-text">VIP Client Sign In</h3>
+        <button class="close-modal-btn" onclick="App.closeModal('authModal')">✕</button>
+      </div>
+
+      <!-- Quick Demo Sign-in Banner -->
+      <div style="background:rgba(212,175,55,0.08);border:1px dashed var(--gold-border);border-radius:8px;padding:12px 14px;margin-bottom:20px;">
+        <div style="font-size:0.8rem;color:#f3e5ab;margin-bottom:8px;font-weight:600;">⚡ Quick Demo Access:</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-gold btn-sm" style="font-size:0.78rem;padding:6px 12px;" onclick="App.quickDemoLogin('admin')">
+            💈 Master Barber (Admin)
+          </button>
+          <button class="btn btn-outline-gold btn-sm" style="font-size:0.78rem;padding:6px 12px;" onclick="App.quickDemoLogin('customer')">
+            👤 VIP Client
+          </button>
+        </div>
+      </div>
+
+      <form id="authForm">
+        <div id="authNameGroup" class="form-group" style="display:none;">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="authName" class="form-input" placeholder="e.g. Jordan Bell" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="authEmail" class="form-input" placeholder="e.g. client@vip.com" required />
+        </div>
+
+        <div id="authPhoneGroup" class="form-group" style="display:none;">
+          <label class="form-label">Phone Number (for SMS reminders)</label>
+          <input type="tel" id="authPhone" class="form-input" placeholder="(909) 000-0000" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" id="authSubmitBtn" class="btn btn-gold" style="width:100%;margin-top:10px;">
+          Sign In
+        </button>
+
+        <div id="authSwitchPrompt" style="text-align:center;margin-top:16px;font-size:0.88rem;color:#9aa0ac;">
+          <!-- Switch text populated by JS -->
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Booking Confirmation Modal -->
+  <div id="bookingConfirmModal" class="modal-backdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="gold-text">Confirm VIP Appointment</h3>
+        <button class="close-modal-btn" onclick="App.closeModal('bookingConfirmModal')">✕</button>
+      </div>
+
+      <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <div style="font-size:0.78rem;color:#d4af37;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Selected Service</div>
+        <div id="bookModalServiceTitle" style="font-size:1.25rem;font-weight:700;color:#fff;">Service Title</div>
+        <div id="bookModalServiceMeta" style="color:#9aa0ac;font-size:0.9rem;margin-bottom:16px;">Duration & Price</div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;">
+          <div style="font-size:0.8rem;color:#9aa0ac;margin-bottom:4px;">Reserved Date & Time:</div>
+          <div id="bookModalDateTime" style="font-size:1.05rem;font-weight:600;color:#f3e5ab;">Date and Time</div>
+        </div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;margin-top:12px;display:flex;justify-content:space-between;font-size:0.88rem;">
+          <span style="color:#9aa0ac;">Client:</span>
+          <span id="bookModalClientName" style="color:#fff;font-weight:600;">Client Name</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Special Requests / Style Notes (Optional)</label>
+        <textarea id="bookModalNotes" class="form-textarea" placeholder="e.g. Low skin fade, sharp razor lineup, beard styling..."></textarea>
+      </div>
+
+      <div style="background:rgba(212,175,55,0.08);border:1px solid var(--gold-border);border-radius:8px;padding:12px;margin-bottom:20px;font-size:0.82rem;color:#f3e5ab;">
+        ✓ Real-Time Hold: Your appointment will be locked immediately and confirmed on the master calendar.
+      </div>
+
+      <button class="btn btn-gold" style="width:100%;" onclick="App.confirmBookingSubmission()">
+        Complete VIP Reservation
+      </button>
+    </div>
+  </div>
+
+  <!-- Booking Receipt Modal -->
+  <div id="bookingReceiptModal" class="modal-backdrop">
+    <div class="modal-window" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+      <h3 class="gold-text" style="font-size:1.8rem;margin-bottom:8px;">Appointment Confirmed!</h3>
+      <p style="color:#9aa0ac;font-size:0.95rem;margin-bottom:24px;">Your private session has been reserved at Private Millionaires Barber Studio.</p>
+
+      <div style="background:#151822;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;text-align:left;margin-bottom:24px;font-size:0.92rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+          <span style="color:#9aa0ac;">Booking Ref:</span>
+          <strong id="receiptId" style="color:#d4af37;">#BK-000</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+          <span style="color:#9aa0ac;">Service:</span>
+          <strong id="receiptService" style="color:#fff;">Service</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+          <span style="color:#9aa0ac;">Schedule:</span>
+          <strong id="receiptDateTime" style="color:#f3e5ab;">Date & Time</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+          <span style="color:#9aa0ac;">Barber:</span>
+          <strong id="receiptBarber" style="color:#fff;">Master Barber</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;margin-top:10px;">
+          <span style="color:#9aa0ac;">Studio Fee:</span>
+          <strong id="receiptTotal" style="color:#d4af37;font-size:1.15rem;">$0.00</strong>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn btn-outline-gold" style="flex:1;" onclick="App.downloadCalendarFile()">
+          📅 Add to Calendar (.ics)
+        </button>
+        <button class="btn btn-gold" style="flex:1;" onclick="App.closeModal('bookingReceiptModal')">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail & Review Modal -->
+  <div id="productDetailModal" class="modal-backdrop">
+    <div class="modal-window" style="max-width:680px;">
+      <div class="modal-header">
+        <span id="prodModalCat" class="pill pill-gold">Category</span>
+        <button class="close-modal-btn" onclick="App.closeModal('productDetailModal')">✕</button>
+      </div>
+
+      <div style="display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;">
+        <img id="prodModalImg" src="" style="width:220px;height:220px;object-fit:cover;border-radius:12px;border:1px solid var(--border-subtle);" />
+        <div style="flex:1;min-width:260px;">
+          <h2 id="prodModalName" style="font-size:1.45rem;margin-bottom:8px;">Product Name</h2>
+          <div id="prodModalRating" style="margin-bottom:12px;"></div>
+          <div id="prodModalPrice" style="font-size:1.6rem;font-weight:700;color:#d4af37;margin-bottom:14px;font-family:var(--font-heading);">$0.00</div>
+          <button id="prodModalAddBagBtn" class="btn btn-gold btn-sm" style="width:100%;">
+            + Add to Grooming Bag
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <h4 style="color:#f3e5ab;margin-bottom:8px;">Description & Ritual</h4>
+        <p id="prodModalDesc" style="color:#d1d5db;font-size:0.92rem;line-height:1.6;"></p>
+      </div>
+
+      <!-- Verified Customer Reviews -->
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;">
+        <h4 style="color:#f3e5ab;margin-bottom:14px;">Client Reviews & Ratings</h4>
+        <div id="prodModalReviewsList">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Add Review Form -->
+        <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;margin-top:20px;">
+          <h5 style="color:#d4af37;margin-bottom:12px;font-size:0.95rem;">Write a Review</h5>
+          <form id="productReviewForm">
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">Rating</label>
+              <select id="reviewRatingSelect" class="form-select">
+                <option value="5">★★★★★ (5 Stars - Exceptional)</option>
+                <option value="4">★★★★☆ (4 Stars - Great)</option>
+                <option value="3">★★★☆☆ (3 Stars - Average)</option>
+                <option value="2">★★☆☆☆ (2 Stars - Fair)</option>
+                <option value="1">★☆☆☆☆ (1 Star - Poor)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">Your Experience / Feedback</label>
+              <textarea id="reviewCommentText" class="form-textarea" placeholder="Share your experience with this grooming product..." required style="min-height:70px;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-gold btn-sm">
+              Submit Review
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Side Drawer -->
+  <div id="cartDrawerBackdrop" class="drawer-backdrop" onclick="if(event.target === this) App.closeCartDrawer()">
+    <div class="side-drawer">
+      <div class="drawer-header">
+        <h3 class="gold-text" style="font-size:1.25rem;">Grooming Bag</h3>
+        <button class="close-modal-btn" onclick="App.closeCartDrawer()">✕</button>
+      </div>
+
+      <div id="drawerCartItems" class="drawer-body">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="drawer-footer">
+        <div style="display:flex;justify-content:space-between;margin-bottom:18px;font-size:1.15rem;font-weight:700;">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal" style="color:#d4af37;">$0.00</span>
+        </div>
+        <button class="btn btn-gold" style="width:100%;" onclick="App.openCheckoutModal()">
+          Proceed to VIP Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="modal-backdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="gold-text">Grooming Checkout</h3>
+        <button class="close-modal-btn" onclick="App.closeModal('checkoutModal')">✕</button>
+      </div>
+
+      <form id="checkoutForm">
+        <div class="form-group">
+          <label class="form-label">Fulfillment Method</label>
+          <div style="display:flex;gap:12px;">
+            <label style="flex:1;background:#151822;border:1px solid var(--border-subtle);border-radius:8px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+              <input type="radio" name="deliveryType" value="studio_pickup" checked onchange="document.getElementById('shippingAddressWrap').style.display='none'" />
+              <span>Studio Pickup (Colton, CA)</span>
+            </label>
+            <label style="flex:1;background:#151822;border:1px solid var(--border-subtle);border-radius:8px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+              <input type="radio" name="deliveryType" value="delivery" onchange="document.getElementById('shippingAddressWrap').style.display='block'" />
+              <span>Home Delivery</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="shippingAddressWrap" class="form-group" style="display:none;">
+          <label class="form-label">Shipping Address</label>
+          <textarea id="checkoutAddress" class="form-textarea" placeholder="Street address, city, state, zip code..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contact Phone</label>
+          <input type="tel" id="checkoutContactPhone" class="form-input" placeholder="(909) 000-0000" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Payment Option (Placeholder / Studio Direct)</label>
+          <select id="checkoutPaymentMethod" class="form-select">
+            <option value="Cash on Arrival">Cash on Arrival (At Studio)</option>
+            <option value="Zelle">Zelle Transfer (To (909) 430-4591)</option>
+            <option value="Apple Pay / Cash App">Apple Pay / Cash App</option>
+            <option value="Credit / Debit Card">Credit / Debit Card (Card Machine at Pickup)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Order Notes</label>
+          <input type="text" id="checkoutNotes" class="form-input" placeholder="e.g. Pick up during haircut appointment" />
+        </div>
+
+        <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;margin-bottom:20px;display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700;">
+          <span>Total:</span>
+          <span id="checkoutTotalDisplay" style="color:#d4af37;">$0.00</span>
+        </div>
+
+        <button type="submit" class="btn btn-gold" style="width:100%;">
+          Place Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Success Modal -->
+  <div id="orderSuccessModal" class="modal-backdrop">
+    <div class="modal-window" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🛍️</div>
+      <h3 class="gold-text" style="font-size:1.8rem;margin-bottom:8px;">Order Received!</h3>
+      <p style="color:#9aa0ac;margin-bottom:24px;">Thank you for your order. We are preparing your grooming essentials.</p>
+
+      <div style="background:#151822;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px;text-align:left;margin-bottom:24px;font-size:0.92rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="color:#9aa0ac;">Order Number:</span>
+          <strong id="orderSuccessId" style="color:#d4af37;">#ORD-000</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="color:#9aa0ac;">Fulfillment:</span>
+          <span id="orderSuccessDelivery" style="color:#fff;">Pickup</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="color:#9aa0ac;">Payment:</span>
+          <span id="orderSuccessPayment" style="color:#fff;">Cash on Arrival</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;margin-top:8px;">
+          <span style="color:#9aa0ac;">Total Amount:</span>
+          <strong id="orderSuccessTotal" style="color:#d4af37;font-size:1.15rem;">$0.00</strong>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" style="width:100%;" onclick="App.closeModal('orderSuccessModal')">
+        Continue Browsing
+      </button>
+    </div>
+  </div>
+
+  <!-- Customer Account Modal -->
+  <div id="accountModal" class="modal-backdrop">
+    <div class="modal-window" style="max-width:680px;">
+      <div class="modal-header">
+        <h3 class="gold-text">VIP Member Account</h3>
+        <button class="close-modal-btn" onclick="App.closeModal('accountModal')">✕</button>
+      </div>
+
+      <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h4 id="accNameDisplay" style="color:#fff;font-size:1.2rem;">Client Name</h4>
+          <div id="accEmailDisplay" style="color:#9aa0ac;font-size:0.85rem;">client@vip.com</div>
+          <div id="accPhoneDisplay" style="color:#d4af37;font-size:0.85rem;">Phone</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="API.logout();App.closeModal('accountModal');">Sign Out</button>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <h4 style="color:#d4af37;margin-bottom:12px;">My Appointments</h4>
+        <div id="accBookingsList">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <div>
+        <h4 style="color:#d4af37;margin-bottom:12px;">My Product Orders</h4>
+        <div id="accOrdersList">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin VIP Portal Modal -->
+  <div id="adminPortalModal" class="modal-backdrop">
+    <div class="modal-window" style="max-width:960px;width:95%;">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="logo-monogram" style="width:36px;height:36px;font-size:1rem;">PM</div>
+          <h3 class="gold-text" style="font-size:1.35rem;">Master Barber Studio Command</h3>
+        </div>
+        <button class="close-modal-btn" onclick="App.closeModal('adminPortalModal')">✕</button>
+      </div>
+
+      <!-- Live Metrics Bar -->
+      <div class="metrics-row">
+        <div class="metric-box">
+          <div class="metric-title">Total Studio Revenue</div>
+          <div id="metricRevenue" class="metric-val">$0.00</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-title">Total Appointments</div>
+          <div id="metricBookings" class="metric-val">0</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-title">Product Orders</div>
+          <div id="metricOrders" class="metric-val">0</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-title">Active Inventory</div>
+          <div id="metricProducts" class="metric-val">0</div>
+        </div>
+      </div>
+
+      <!-- Admin Tabs Navigation -->
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="tabAdminSlots">🗓 Slot Release Engine</button>
+        <button class="admin-tab-btn" data-tab="tabAdminBookings">💈 Appointments Control</button>
+        <button class="admin-tab-btn" data-tab="tabAdminOrders">🛍 Product Orders</button>
+        <button class="admin-tab-btn" data-tab="tabAdminServices">✂️ Services Menu</button>
+        <button class="admin-tab-btn" data-tab="tabAdminProducts">📦 Products & Stock</button>
+      </div>
+
+      <!-- Tab: Slot Release Engine -->
+      <div id="tabAdminSlots" class="admin-tab-content">
+        <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:22px;margin-bottom:24px;">
+          <h4 style="color:#d4af37;margin-bottom:14px;font-size:1.05rem;">Batch Slot Generator</h4>
+          <form id="batchSlotForm">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Date</label>
+                <input type="date" id="batchSlotDate" class="form-input" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Start Time</label>
+                <input type="time" id="batchSlotStart" class="form-input" value="09:00" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">End Time</label>
+                <input type="time" id="batchSlotEnd" class="form-input" value="18:00" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Slot Duration</label>
+                <select id="batchSlotInterval" class="form-select">
+                  <option value="30">30 Minutes</option>
+                  <option value="45" selected>45 Minutes</option>
+                  <option value="60">60 Minutes</option>
+                  <option value="75">75 Minutes</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Master Barber</label>
+                <input type="text" id="batchSlotBarber" class="form-input" value="Master Barber Marcus" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">
+              ✨ Release Slots to Clients
+            </button>
+          </form>
+        </div>
+
+        <h4 style="color:#f3e5ab;margin-bottom:12px;">Active Slots on Master Schedule</h4>
+        <div class="table-wrap">
+          <table class="luxury-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time Range</th>
+                <th>Barber</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminSlotsTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Appointments Control -->
+      <div id="tabAdminBookings" class="admin-tab-content" style="display:none;">
+        <h4 style="color:#f3e5ab;margin-bottom:12px;">Live Appointment Bookings</h4>
+        <div class="table-wrap">
+          <table class="luxury-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Date / Time</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminBookingsTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Product Orders -->
+      <div id="tabAdminOrders" class="admin-tab-content" style="display:none;">
+        <h4 style="color:#f3e5ab;margin-bottom:12px;">Client Grooming Orders</h4>
+        <div class="table-wrap">
+          <table class="luxury-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Client</th>
+                <th>Items</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Services Menu -->
+      <div id="tabAdminServices" class="admin-tab-content" style="display:none;">
+        <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:22px;margin-bottom:24px;">
+          <h4 style="color:#d4af37;margin-bottom:14px;font-size:1.05rem;">Add New Studio Service</h4>
+          <form id="createServiceForm">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Service Title</label>
+                <input type="text" id="newServiceTitle" class="form-input" placeholder="e.g. Royal Beard Dye" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Category</label>
+                <select id="newServiceCategory" class="form-select">
+                  <option value="Haircuts">Haircuts</option>
+                  <option value="Beard Care">Beard Care</option>
+                  <option value="VIP Combos">VIP Combos</option>
+                  <option value="Treatments">Treatments</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Price ($)</label>
+                <input type="number" step="0.5" id="newServicePrice" class="form-input" placeholder="45.00" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Duration (Minutes)</label>
+                <input type="number" id="newServiceDuration" class="form-input" value="45" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Photo Upload (Optional)</label>
+                <input type="file" id="newServiceImageFile" class="form-input" accept="image/*" />
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label">Description</label>
+              <textarea id="newServiceDesc" class="form-textarea" placeholder="Detailed service description..." required style="min-height:60px;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">+ Add Service to Menu</button>
+          </form>
+        </div>
+
+        <h4 style="color:#f3e5ab;margin-bottom:12px;">Active Services</h4>
+        <div class="table-wrap">
+          <table class="luxury-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminServicesTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Products & Stock -->
+      <div id="tabAdminProducts" class="admin-tab-content" style="display:none;">
+        <div style="background:#151822;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:22px;margin-bottom:24px;">
+          <h4 style="color:#d4af37;margin-bottom:14px;font-size:1.05rem;">Upload Grooming Product</h4>
+          <form id="createProductForm">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Product Name</label>
+                <input type="text" id="newProductName" class="form-input" placeholder="e.g. 24K Matte Clay" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Category</label>
+                <select id="newProductCategory" class="form-select">
+                  <option value="Hair Styling">Hair Styling</option>
+                  <option value="Beard Care">Beard Care</option>
+                  <option value="Skin & Face">Skin & Face</option>
+                  <option value="Cologne & Fragrance">Cologne & Fragrance</option>
+                  <option value="Tools">Tools</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Price ($)</label>
+                <input type="number" step="0.5" id="newProductPrice" class="form-input" placeholder="28.00" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Initial Stock</label>
+                <input type="number" id="newProductStock" class="form-input" value="25" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Product Photo (Optional)</label>
+                <input type="file" id="newProductImageFile" class="form-input" accept="image/*" />
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label">Description & Ingredients</label>
+              <textarea id="newProductDesc" class="form-textarea" placeholder="Ingredients, scent profile, hold level..." required style="min-height:60px;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">+ Upload Product</button>
+          </form>
+        </div>
+
+        <h4 style="color:#f3e5ab;margin-bottom:12px;">Product Inventory</h4>
+        <div class="table-wrap">
+          <table class="luxury-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/ws.js"></script>
+  <script src="/static/js/store.js"></script>
+  <script src="/static/js/components.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
