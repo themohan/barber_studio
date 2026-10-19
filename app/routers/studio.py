@@ -1,10 +1,13 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_
-from typing import Dict, Any
+from sqlalchemy import select, func, and_, cast, Date, String
+from sqlalchemy.orm import selectinload
+from typing import Dict, Any, Optional
+from datetime import datetime, timedelta, timezone, date as date_type
+import calendar
 
 from app.database import get_db
-from app.models import Booking, Order, Product, User, Slot
+from app.models import Booking, Order, Product, User, Slot, Service, OrderItem
 from app.deps import require_admin
 from app.config import settings
 
@@ -109,3 +112,226 @@ async def get_admin_stats(
         "total_products": total_products,
         "low_stock_products": low_stock_products
     }
+
+@router.get("/analytics")
+async def get_admin_analytics(
+    period: str = Query("weekly", description="daily | weekly | monthly"),
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Returns analytics data for admin dashboard charts.
+    period: "daily" (last 7 days), "weekly" (last 8 weeks), "monthly" (last 12 months)
+    """
+    now = datetime.now(timezone.utc)
+
+    # Build date buckets
+    if period == "daily":
+        num_buckets = 7
+        labels = []
+        bucket_dates = []
+        for i in range(num_buckets - 1, -1, -1):
+            d = (now - timedelta(days=i)).date()
+            labels.append(d.strftime("%a %b %d"))
+            bucket_dates.append(d)
+
+        def get_bucket(dt):
+            return dt.date() if hasattr(dt, 'date') else dt
+
+        def label_for(d):
+            return d.strftime("%a %b %d")
+
+    elif period == "weekly":
+        num_buckets = 8
+        labels = []
+        bucket_dates = []
+        for i in range(num_buckets - 1, -1, -1):
+            week_start = (now - timedelta(weeks=i)).date()
+            # start of that week (Monday)
+            week_start = week_start - timedelta(days=week_start.weekday())
+            bucket_dates.append(week_start)
+            labels.append(week_start.strftime("Wk %b %d"))
+
+        def get_bucket(dt):
+            d = dt.date() if hasattr(dt, 'date') else dt
+            return d - timedelta(days=d.weekday())
+
+        def label_for(d):
+            return d.strftime("Wk %b %d")
+
+    else:  # monthly
+        num_buckets = 12
+        labels = []
+        bucket_dates = []
+        for i in range(num_buckets - 1, -1, -1):
+            # Go back i months
+            month_dt = now.date().replace(day=1)
+            for _ in range(i):
+                month_dt = (month_dt - timedelta(days=1)).replace(day=1)
+            bucket_dates.append(month_dt)
+            labels.append(month_dt.strftime("%b %Y"))
+
+        def get_bucket(dt):
+            d = dt.date() if hasattr(dt, 'date') else dt
+            return d.replace(day=1)
+
+        def label_for(d):
+            return d.strftime("%b %Y")
+
+    # Date range: from earliest bucket to now
+    start_date = bucket_dates[0]
+
+    # ---- Revenue Trend (bookings + orders) ----
+    booking_res = await db.execute(
+        select(Booking).options(selectinload(Booking.slot))
+        .where(
+            and_(
+                Booking.status.in_(["confirmed", "completed"]),
+                Booking.created_at >= datetime.combine(start_date, datetime.min.time()).replace(tzinfo=timezone.utc)
+            )
+        )
+    )
+    bookings = booking_res.scalars().all()
+
+    order_res = await db.execute(
+        select(Order)
+        .where(
+            and_(
+                Order.status != "cancelled",
+                Order.created_at >= datetime.combine(start_date, datetime.min.time()).replace(tzinfo=timezone.utc)
+            )
+        )
+    )
+    orders = order_res.scalars().all()
+
+    # Build bucket maps
+    booking_rev_map = {d: 0.0 for d in bucket_dates}
+    for b in bookings:
+        created = b.created_at
+        if created and created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        if created:
+            bucket = get_bucket(created)
+            if bucket in booking_rev_map:
+                booking_rev_map[bucket] += b.total_price or 0.0
+
+    order_rev_map = {d: 0.0 for d in bucket_dates}
+    for o in orders:
+        created = o.created_at
+        if created and created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        if created:
+            bucket = get_bucket(created)
+            if bucket in order_rev_map:
+                order_rev_map[bucket] += o.total_amount or 0.0
+
+    booking_revenue_series = [round(booking_rev_map[d], 2) for d in bucket_dates]
+    order_revenue_series = [round(order_rev_map[d], 2) for d in bucket_dates]
+    total_revenue_series = [round(booking_rev_map[d] + order_rev_map[d], 2) for d in bucket_dates]
+
+    # ---- Booking Count Trend ----
+    booking_count_map = {d: 0 for d in bucket_dates}
+    for b in bookings:
+        created = b.created_at
+        if created and created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        if created:
+            bucket = get_bucket(created)
+            if bucket in booking_count_map:
+                booking_count_map[bucket] += 1
+    booking_count_series = [booking_count_map[d] for d in bucket_dates]
+
+    # ---- Booking Status Breakdown (all time filtered) ----
+    status_res = await db.execute(
+        select(Booking.status, func.count(Booking.id))
+        .group_by(Booking.status)
+    )
+    booking_status_raw = status_res.all()
+    booking_status = {row[0]: row[1] for row in booking_status_raw}
+
+    # ---- Order Status Breakdown ----
+    ord_status_res = await db.execute(
+        select(Order.status, func.count(Order.id))
+        .group_by(Order.status)
+    )
+    order_status_raw = ord_status_res.all()
+    order_status = {row[0]: row[1] for row in order_status_raw}
+
+    # ---- Top 5 Services by Revenue ----
+    svc_res = await db.execute(
+        select(Service.title, func.sum(Booking.total_price).label("rev"), func.count(Booking.id).label("cnt"))
+        .join(Booking, Booking.service_id == Service.id)
+        .where(Booking.status.in_(["confirmed", "completed"]))
+        .group_by(Service.id, Service.title)
+        .order_by(func.sum(Booking.total_price).desc())
+        .limit(5)
+    )
+    top_services = [
+        {"name": row[0], "revenue": round(row[1] or 0, 2), "count": row[2]}
+        for row in svc_res.all()
+    ]
+
+    # ---- Service Category Revenue Split ----
+    cat_res = await db.execute(
+        select(Service.category, func.sum(Booking.total_price).label("rev"))
+        .join(Booking, Booking.service_id == Service.id)
+        .where(Booking.status.in_(["confirmed", "completed"]))
+        .group_by(Service.category)
+        .order_by(func.sum(Booking.total_price).desc())
+    )
+    category_revenue = [
+        {"category": row[0], "revenue": round(row[1] or 0, 2)}
+        for row in cat_res.all()
+    ]
+
+    # ---- Order Count Trend ----
+    order_count_map = {d: 0 for d in bucket_dates}
+    for o in orders:
+        created = o.created_at
+        if created and created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        if created:
+            bucket = get_bucket(created)
+            if bucket in order_count_map:
+                order_count_map[bucket] += 1
+    order_count_series = [order_count_map[d] for d in bucket_dates]
+
+    # ---- New Customers Trend ----
+    cust_res = await db.execute(
+        select(User)
+        .where(
+            and_(
+                User.role == "customer",
+                User.created_at >= datetime.combine(start_date, datetime.min.time()).replace(tzinfo=timezone.utc)
+            )
+        )
+    )
+    customers = cust_res.scalars().all()
+    cust_map = {d: 0 for d in bucket_dates}
+    for c in customers:
+        created = c.created_at
+        if created and created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        if created:
+            bucket = get_bucket(created)
+            if bucket in cust_map:
+                cust_map[bucket] += 1
+    customer_series = [cust_map[d] for d in bucket_dates]
+
+    return {
+        "period": period,
+        "labels": labels,
+        "revenue": {
+            "total": total_revenue_series,
+            "bookings": booking_revenue_series,
+            "orders": order_revenue_series
+        },
+        "booking_counts": booking_count_series,
+        "order_counts": order_count_series,
+        "new_customers": customer_series,
+        "booking_status_breakdown": booking_status,
+        "order_status_breakdown": order_status,
+        "top_services": top_services,
+        "category_revenue": category_revenue
+    }
+

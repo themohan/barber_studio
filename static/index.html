@@ -723,11 +723,123 @@
 
       <!-- Admin Tabs Navigation -->
       <div class="admin-tabs">
+        <button class="admin-tab-btn" data-tab="tabAdminAnalytics">📊 Analytics</button>
         <button class="admin-tab-btn active" data-tab="tabAdminSlots">🗓 Slot Release Engine</button>
         <button class="admin-tab-btn" data-tab="tabAdminBookings">💈 Appointments Control</button>
         <button class="admin-tab-btn" data-tab="tabAdminOrders">🛍 Product Orders</button>
         <button class="admin-tab-btn" data-tab="tabAdminServices">✂️ Services Menu</button>
         <button class="admin-tab-btn" data-tab="tabAdminProducts">📦 Products & Stock</button>
+      </div>
+
+      <!-- Tab: Analytics Dashboard -->
+      <div id="tabAdminAnalytics" class="admin-tab-content" style="display:none;">
+        <!-- Period Filter -->
+        <div class="analytics-filter-bar">
+          <span class="analytics-filter-label">📅 Time Period:</span>
+          <div class="analytics-period-btns">
+            <button class="analytics-period-btn" data-period="daily" onclick="App.loadAnalytics('daily')">Daily</button>
+            <button class="analytics-period-btn active" data-period="weekly" onclick="App.loadAnalytics('weekly')">Weekly</button>
+            <button class="analytics-period-btn" data-period="monthly" onclick="App.loadAnalytics('monthly')">Monthly</button>
+          </div>
+          <div id="analyticsRefreshTime" style="margin-left:auto;font-size:0.78rem;color:#9aa0ac;"></div>
+        </div>
+
+        <!-- KPI Summary Row -->
+        <div class="analytics-kpi-row" id="analyticsKpiRow">
+          <div class="analytics-kpi-card">
+            <div class="analytics-kpi-icon">💰</div>
+            <div class="analytics-kpi-label">Period Revenue</div>
+            <div class="analytics-kpi-value" id="kpiPeriodRevenue">—</div>
+            <div class="analytics-kpi-sub" id="kpiPeriodRevenueSub">Loading...</div>
+          </div>
+          <div class="analytics-kpi-card">
+            <div class="analytics-kpi-icon">✂️</div>
+            <div class="analytics-kpi-label">Appointments</div>
+            <div class="analytics-kpi-value" id="kpiPeriodBookings">—</div>
+            <div class="analytics-kpi-sub" id="kpiPeriodBookingsSub">Loading...</div>
+          </div>
+          <div class="analytics-kpi-card">
+            <div class="analytics-kpi-icon">🛍️</div>
+            <div class="analytics-kpi-label">Product Orders</div>
+            <div class="analytics-kpi-value" id="kpiPeriodOrders">—</div>
+            <div class="analytics-kpi-sub" id="kpiPeriodOrdersSub">Loading...</div>
+          </div>
+          <div class="analytics-kpi-card">
+            <div class="analytics-kpi-icon">👤</div>
+            <div class="analytics-kpi-label">New Clients</div>
+            <div class="analytics-kpi-value" id="kpiPeriodCustomers">—</div>
+            <div class="analytics-kpi-sub" id="kpiPeriodCustomersSub">Loading...</div>
+          </div>
+        </div>
+
+        <!-- Row 1: Revenue Trend (wide) -->
+        <div class="analytics-charts-row" style="margin-bottom:20px;">
+          <div class="analytics-chart-card analytics-chart-wide">
+            <div class="analytics-chart-title">💹 Revenue Trend</div>
+            <div class="analytics-chart-sub">Bookings vs. Product Sales</div>
+            <div class="analytics-chart-wrap" style="height:260px;">
+              <canvas id="chartRevenueTrend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Activity Bar + Donut Pair -->
+        <div class="analytics-charts-row" style="margin-bottom:20px;">
+          <div class="analytics-chart-card" style="flex:1.6;">
+            <div class="analytics-chart-title">📈 Activity Overview</div>
+            <div class="analytics-chart-sub">Appointments & Orders per period</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartActivity"></canvas>
+            </div>
+          </div>
+          <div class="analytics-chart-card" style="flex:1;">
+            <div class="analytics-chart-title">💈 Booking Status</div>
+            <div class="analytics-chart-sub">All-time breakdown</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartBookingStatus"></canvas>
+            </div>
+            <div id="chartBookingStatusLegend" class="analytics-donut-legend"></div>
+          </div>
+          <div class="analytics-chart-card" style="flex:1;">
+            <div class="analytics-chart-title">🛍️ Order Status</div>
+            <div class="analytics-chart-sub">All-time breakdown</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartOrderStatus"></canvas>
+            </div>
+            <div id="chartOrderStatusLegend" class="analytics-donut-legend"></div>
+          </div>
+        </div>
+
+        <!-- Row 3: Top Services + Category Pie + Customers -->
+        <div class="analytics-charts-row" style="margin-bottom:20px;">
+          <div class="analytics-chart-card" style="flex:1.6;">
+            <div class="analytics-chart-title">⭐ Top Services by Revenue</div>
+            <div class="analytics-chart-sub">All-time highest earners</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartTopServices"></canvas>
+            </div>
+          </div>
+          <div class="analytics-chart-card" style="flex:1;">
+            <div class="analytics-chart-title">🏷️ Revenue by Category</div>
+            <div class="analytics-chart-sub">Service category split</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartCategoryRevenue"></canvas>
+            </div>
+            <div id="chartCategoryRevenueLegend" class="analytics-donut-legend"></div>
+          </div>
+          <div class="analytics-chart-card" style="flex:1;">
+            <div class="analytics-chart-title">👥 New Client Registrations</div>
+            <div class="analytics-chart-sub">Growth over time</div>
+            <div class="analytics-chart-wrap" style="height:230px;">
+              <canvas id="chartCustomers"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading overlay -->
+        <div id="analyticsLoadingOverlay" style="display:none;position:absolute;inset:0;background:rgba(10,11,15,0.7);border-radius:16px;display:flex;align-items:center;justify-content:center;z-index:10;">
+          <div style="color:#d4af37;font-size:1.1rem;font-family:var(--font-heading);">Loading Analytics...</div>
+        </div>
       </div>
 
       <!-- Tab: Slot Release Engine -->
@@ -960,10 +1072,13 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="/static/js/api.js"></script>
   <script src="/static/js/ws.js"></script>
   <script src="/static/js/store.js"></script>
   <script src="/static/js/components.js"></script>
+  <script src="/static/js/analytics.js"></script>
   <script src="/static/js/app.js"></script>
 </body>
 </html>
+

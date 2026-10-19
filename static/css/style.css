@@ -1202,3 +1202,215 @@ table.luxury-table tr:hover td {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===================================================================
+   ANALYTICS DASHBOARD
+   =================================================================== */
+
+/* ── Period Filter Bar ── */
+.analytics-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.analytics-filter-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.analytics-period-btns {
+  display: flex;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+}
+.analytics-period-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.analytics-period-btn:hover {
+  color: var(--gold-light);
+  background: rgba(212,175,55,0.08);
+}
+.analytics-period-btn.active {
+  background: var(--gold-gradient);
+  color: #0a0b0e;
+  box-shadow: 0 2px 12px rgba(212,175,55,0.35);
+}
+
+/* ── KPI Cards Row ── */
+.analytics-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.analytics-kpi-card {
+  background: linear-gradient(145deg, rgba(22,25,34,0.95) 0%, rgba(18,20,28,0.85) 100%);
+  border: 1px solid rgba(212,175,55,0.18);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.28s, box-shadow 0.28s;
+}
+.analytics-kpi-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.analytics-kpi-card:hover {
+  border-color: rgba(212,175,55,0.38);
+  box-shadow: 0 0 20px rgba(212,175,55,0.12);
+}
+.analytics-kpi-icon {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+.analytics-kpi-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+.analytics-kpi-value {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.analytics-kpi-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ── Chart Rows & Cards ── */
+.analytics-charts-row {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+.analytics-chart-card {
+  background: linear-gradient(145deg, rgba(18,20,28,0.96) 0%, rgba(14,16,22,0.92) 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: 18px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.28s, box-shadow 0.28s;
+  flex: 1;
+}
+.analytics-chart-card:hover {
+  border-color: rgba(212,175,55,0.2);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+.analytics-chart-wide {
+  flex: 1 1 100%;
+}
+.analytics-chart-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 2px;
+}
+.analytics-chart-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.analytics-chart-wrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+}
+
+/* ── Donut Legend ── */
+.analytics-donut-legend {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.analytics-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+}
+.analytics-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.analytics-legend-label {
+  color: var(--text-muted);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.analytics-legend-val {
+  color: var(--text-main);
+  font-weight: 600;
+  margin-left: auto;
+  padding-right: 6px;
+}
+.analytics-legend-pct {
+  color: var(--text-dim);
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ── KPI value pop-in animation ── */
+@keyframes kpiPop {
+  0%   { transform: scale(0.88); opacity: 0.5; }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1);    opacity: 1;   }
+}
+
+/* ── Responsive analytics ── */
+@media (max-width: 1024px) {
+  .analytics-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .analytics-charts-row {
+    flex-wrap: wrap;
+  }
+  .analytics-chart-card {
+    min-width: calc(50% - 8px);
+  }
+}
+@media (max-width: 640px) {
+  .analytics-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .analytics-chart-card {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+  .analytics-kpi-value {
+    font-size: 1.35rem;
+  }
+}
+

@@ -641,6 +641,16 @@ END:VCALENDAR`;
     loadAdminOrders();
     loadAdminServicesList();
     loadAdminProductsList();
+    // Load analytics dashboard (default weekly period)
+    if (typeof Analytics !== 'undefined') {
+      Analytics.load('weekly');
+    }
+  }
+
+  async function loadAnalytics(period = 'weekly') {
+    if (typeof Analytics !== 'undefined') {
+      Analytics.load(period);
+    }
   }
 
   async function loadAdminStats() {
@@ -1146,6 +1156,7 @@ END:VCALENDAR`;
     downloadCalendarFile,
     openAdminPortal,
     loadAdminStats,
+    loadAnalytics,
     toggleSlotBlock,
     deleteSlot,
     updateBookingStatus,

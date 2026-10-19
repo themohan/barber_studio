@@ -227,6 +227,11 @@ const API = (() => {
 
     getAdminStats() {
       return request('/api/studio/stats');
+    },
+
+    getAnalytics(period = 'weekly') {
+      return request(`/api/studio/analytics?period=${period}`);
     }
   };
 })();
+
